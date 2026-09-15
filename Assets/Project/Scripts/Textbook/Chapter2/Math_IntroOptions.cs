@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Math_IntroOptions : MonoBehaviour
 {
     [SerializeField] private GameObject IntroCanvas = null;
     [SerializeField] private GameObject GameCanvas = null;
-
-    //------------------------------------------------------------------------------------------------------
 
     public void StartGame()
     {
@@ -24,8 +20,6 @@ public class Math_IntroOptions : MonoBehaviour
         }
     }
 
-    //------------------------------------------------------------------------------------------------------
-
     public void BackToMenu()
     {
         //Activate the game canvas.
@@ -40,6 +34,4 @@ public class Math_IntroOptions : MonoBehaviour
             GameCanvas.SetActive(false);
         }
     }
-
-    //------------------------------------------------------------------------------------------------------
 }

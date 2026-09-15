@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
@@ -15,15 +13,11 @@ public class Spawner : MonoBehaviour
 
     private float           fAccumulatedDeltaTime   = 0.0f;
 
-    //--------------------------------------------------------
-
     private void Start()
     {
         //Set timer at the time to spawn, so we get an instant spawn.
         fAccumulatedDeltaTime = fDelayBetweenSpawns;
     }
-
-    //--------------------------------------------------------
 
     void Update()
     {
@@ -64,6 +58,4 @@ public class Spawner : MonoBehaviour
             }
         }
     }
-
-    //--------------------------------------------------------
 }

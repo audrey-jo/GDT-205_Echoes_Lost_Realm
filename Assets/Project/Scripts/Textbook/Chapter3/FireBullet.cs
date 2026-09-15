@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FireBullet : MonoBehaviour
 {
@@ -13,8 +11,6 @@ public class FireBullet : MonoBehaviour
     private float fAccumulatedDeltaTime = 0.0f;
 
     public PlayerMovement playerMovement = null;
-
-    //--------------------------------------------------------------------------------------
 
     void Update()
     {
@@ -52,6 +48,4 @@ public class FireBullet : MonoBehaviour
             }
         }
     }
-
-    //--------------------------------------------------------------------------------------
 }

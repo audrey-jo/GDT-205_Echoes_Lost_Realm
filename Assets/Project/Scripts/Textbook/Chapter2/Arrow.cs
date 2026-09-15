@@ -10,16 +10,11 @@ public class Arrow : MonoBehaviour
     [SerializeField] Text radiansOutput;
 
     Vector3 centreOfUnitCircle;
-
-    //--------------------------------------------------------------------------------------------------
-
     private void Start()
     {
         //Calculate the centre of the unit circle, which is centred on the screen.
         centreOfUnitCircle = new Vector2(Screen.width / 2, Screen.height / 2);
     }
-
-    //--------------------------------------------------------------------------------------------------
 
     void Update()
     {
@@ -54,7 +49,6 @@ public class Arrow : MonoBehaviour
                 degreesOutput.text = degrees.ToString("#0.000");
             }
 
-            //-----------------------------------------------------------------------------------------
             //We need to know whether this is a right or left rotation.
             float dotRight = VectorMath.Dot(Vector2.right, unitVectorToMousePos);
 
@@ -69,9 +63,6 @@ public class Arrow : MonoBehaviour
             RotateArrow(degrees, dir);
         }
     }
-
-    //--------------------------------------------------------------------------------------------------
-
     void RotateArrow(float degrees, int dir)
     {
         //Rotate the arrow to face this direction.
@@ -81,6 +72,4 @@ public class Arrow : MonoBehaviour
         qNewRotation.eulerAngles = euler;
         transform.rotation = qNewRotation;
     }
-
-    //--------------------------------------------------------------------------------------------------
 }

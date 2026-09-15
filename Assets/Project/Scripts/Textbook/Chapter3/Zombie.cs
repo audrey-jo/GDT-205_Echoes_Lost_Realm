@@ -1,19 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(SteeringBehaviours))]
 public class Zombie : BaseEntity
 {
     private SteeringBehaviours steering = null;
 
-    //--------------------------------------------------------------------------------------
     private void Start()
     {
         steering = GetComponent<SteeringBehaviours>();
     }
-
-    //--------------------------------------------------------------------------------------
 
     void Update()
     {
@@ -38,6 +33,4 @@ public class Zombie : BaseEntity
         Debug.DrawRay(transform.position, vFacing*10.0f, Color.red, 0.0f, true);
         Debug.DrawRay(transform.position, vRight*5.0f, Color.blue, 0.0f, true);
     }
-
-    //--------------------------------------------------------------------------------------
 }

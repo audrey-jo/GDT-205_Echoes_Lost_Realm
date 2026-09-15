@@ -6,22 +6,14 @@ public class Bullet : MonoBehaviour
 {
     Vector2 vMovementDirection;
     public float fBulletMovementSpeed = 50.0f;
-
-    //--------------------------------------------------------------------------------------
-
     public void SetMovementDirection(Vector2 dir)
     {
         vMovementDirection = dir;
     }
-
-    //--------------------------------------------------------------------------------------
-
     void Update()
     {
         transform.position += (Vector3)vMovementDirection * fBulletMovementSpeed * Time.deltaTime;
     }
-
-    //--------------------------------------------------------------------------------------
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -41,6 +33,4 @@ public class Bullet : MonoBehaviour
         //Destroy the bullet.
         Destroy(this.gameObject);
     }
-
-    //--------------------------------------------------------------------------------------
 }

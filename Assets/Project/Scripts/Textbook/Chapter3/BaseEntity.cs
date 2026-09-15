@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BaseEntity : MonoBehaviour
 {
@@ -21,21 +19,11 @@ public class BaseEntity : MonoBehaviour
     protected float fCurrentDegree = 0.0f;
     protected Quaternion qNewRotation = Quaternion.identity;
 
-
-    //--------------------------------------------------------------------------------------
-
     private void Start()
     {
         vCurrentVelocity = Vector2.zero;
     }
 
-    //--------------------------------------------------------------------------------------
-
-    void Update()
-    {
-    }
-
-    //--------------------------------------------------------------------------------------
     protected void UpdateFacingDirection()
     {
         //The velocity must be greater than zero, otherwise we do not want to run this code.
@@ -67,6 +55,4 @@ public class BaseEntity : MonoBehaviour
             vRight = VectorMath.Perpendicular(vFacing);
         }
     }
-
-    //--------------------------------------------------------------------------------------
 }
