@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 
 public class Leaf_MoveToHome : TreeNode_Base
 {
@@ -18,9 +19,27 @@ public class Leaf_MoveToHome : TreeNode_Base
         //This is for visual debug output.
         ghost.AddToCombinedAIString("Leaf_MoveToHome");
 
-        //Delete me.
-        return Status.FAILURE;
+        //Change the visuals of the ghost.
+        ghost.ghostVisuals.SetSpriteSet(SpriteSet.Eyes);
+
+        //Set the desired position.
+        ghost.SetTargetBoardPosition(homePos);
+
+        //Move the ghost.
+        ghost.MoveHome();
+
+        //Return a status to show our progress. (Failure not an option).
+        if (ghost.GetBoardPosition() == homePos)
+        {
+            ghost.SetEaten(false);
+            return Status.SUCCESS;
+        }
+        else
+        {
+            return Status.RUNNING;
+        }
     }
 
     //------------------------------------------------------------------------------
 }
+*/

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 
 public class Leaf_Evade : TreeNode_Base
 {
@@ -24,9 +25,21 @@ public class Leaf_Evade : TreeNode_Base
         //This is for visual debug output.
         ghost.AddToCombinedAIString("Leaf_Evade");
 
-        //Delete me.
-        return Status.FAILURE;
+        //Change the visuals of the ghost.
+        ghost.ghostVisuals.SetSpriteSet(SpriteSet.Evading);
+
+        //Set the desired position.
+        ghost.SetTargetBoardPosition(randomEvadePosition);
+
+        //Move the ghost.
+        ghost.Move();
+
+        //We don't expect the ghost to actually reach this position (its off the board), but
+        //it needs to keep trying until the power pill has worn off (Parent will handle this)
+        return Status.RUNNING;
     }
 
     //------------------------------------------------------------------------------
 }
+
+*/

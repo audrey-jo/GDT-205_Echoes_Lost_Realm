@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 
 //-------------------------------------------------------------------------------------------
 [RequireComponent(typeof(GhostVisuals)), RequireComponent(typeof(AudioSource))]
@@ -419,3 +419,4 @@ public class Ghost : MonoBehaviour
     
     //-------------------------------------------------------------------------------------------
 }
+*/

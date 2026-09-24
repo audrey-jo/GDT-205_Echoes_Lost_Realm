@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -93,11 +94,72 @@ public class TankPlayerAi : TankPlayer
                 break;
             }
         }
+
         //----------------------------------------------------------------------------------------------
+        //Get Fuzzy set values
+        float fElevation = vecToOpp.y;
 
+        //Shift elevation into positive values.
+        float fElevationShift = 75.0f;
+        fElevation += fElevationShift;
 
-        //Todo: Add code here.
+        float fElevation_Below = FuzzyFunctions.ReverseGradient(fElevation, fElevationShift, 0.0f);
+        float fElevation_Same = FuzzyFunctions.Triangle(fElevation, fElevationShift - 32.5f, fElevationShift, fElevationShift + 32.5f);
+        float fElevation_Above = FuzzyFunctions.Gradient(fElevation, fElevationShift, fElevationShift + 75.0f);
 
+        //Ai tank is always to the right, so negative wind (<<<<) is with us, positive wind (>>>>>) is against.
+        float fWindStrength = environment.fWindStrength;
+
+        //We need to shift the wind into a positive bracket.
+        fWindStrength += Environment.kMaxWindStrength;
+
+        //The fuzzy sets are also offset by the same margin so we are only dealing with positive values
+        float fWind_Fast_With = FuzzyFunctions.ReverseGradient(fWindStrength, Environment.kMaxWindStrength - 2.5f, Environment.kMaxWindStrength - 5.0f);
+        float fWind_Slow_With = FuzzyFunctions.Triangle(fWindStrength, Environment.kMaxWindStrength - 5.0f, Environment.kMaxWindStrength - 2.5f, Environment.kMaxWindStrength + 2.5f);
+        float fWind_Slow_Against = FuzzyFunctions.Triangle(fWindStrength, Environment.kMaxWindStrength - 2.5f, Environment.kMaxWindStrength + 2.5f, Environment.kMaxWindStrength + 5.0f);
+        float fWind_Fast_Against = FuzzyFunctions.Gradient(fWindStrength, Environment.kMaxWindStrength + 2.5f, Environment.kMaxWindStrength + 5.0f);
+        
+
+        //----------------------------------------------------------------------------------------------
+        //Get Fuzzy rule values.
+        float fRule1 = FuzzyFunctions.AND(fElevation_Above, fWind_Fast_Against);
+        float fRule2 = FuzzyFunctions.AND(fElevation_Same, fWind_Fast_Against);
+        float fRule3 = FuzzyFunctions.AND(fElevation_Below, fWind_Fast_Against);
+
+        float fRule4 = FuzzyFunctions.AND(fElevation_Above, fWind_Slow_Against);
+        float fRule5 = FuzzyFunctions.AND(fElevation_Same, fWind_Slow_Against);
+        float fRule6 = FuzzyFunctions.AND(fElevation_Below, fWind_Slow_Against);
+
+        float fRule7 = FuzzyFunctions.AND(fElevation_Above, fWind_Slow_With);
+        float fRule8 = FuzzyFunctions.AND(fElevation_Same, fWind_Slow_With);
+        float fRule9 = FuzzyFunctions.AND(fElevation_Below, fWind_Slow_With);
+
+        float fRule10 = FuzzyFunctions.AND(fElevation_Above, fWind_Fast_With);
+        float fRule11 = FuzzyFunctions.AND(fElevation_Same, fWind_Fast_With);
+        float fRule12 = FuzzyFunctions.AND(fElevation_Below, fWind_Fast_With);
+
+        //----------------------------------------------------------------------------------------------
+        //Get Fuzzy membership to output set.
+        float fAngle_Low = FuzzyFunctions.OR(fRule1, FuzzyFunctions.OR(fRule2, FuzzyFunctions.OR(fRule3, FuzzyFunctions.OR(fRule9, FuzzyFunctions.OR(fRule10, FuzzyFunctions.OR(fRule11, fRule12))))));
+        float fAngle_Medium = FuzzyFunctions.OR(fRule4, FuzzyFunctions.OR(fRule6, fRule8));
+        float fAngle_High = FuzzyFunctions.OR(fRule5, fRule7);
+
+        //We don't need to defuzzify these results. Instead we will just take the highest.
+        if (fAngle_Low > fAngle_Medium && fAngle_Low > fAngle_High)
+        {
+            //We want a low shot - Randomly choose a low angle in the relevant range.
+            fDesiredAngle = Random.Range(kMediumAngleRange, kLowAngleRange);
+        }
+        else if (fAngle_Medium > fAngle_High)
+        {
+            //We want a medium shot - Randomly choose a medium angle in the relevant range.
+            fDesiredAngle = Random.Range(kHighAngleRange, kMediumAngleRange);
+        }
+        else
+        {
+            //We must want a high shot - Randomly choose a high angle in the relevant range.
+            fDesiredAngle = Random.Range(0.0f, kHighAngleRange);
+        }
 
         //We now have our angle.
         bChosenAim = true;
@@ -160,11 +222,68 @@ public class TankPlayerAi : TankPlayer
                 break;
             }
         }
+
         //----------------------------------------------------------------------------------------------
+        //Get Fuzzy set values
+        //We know the width of the environment is 210.
+        float fDistance = vecToOpp.magnitude;
 
+        float fDistance_Near = FuzzyFunctions.ReverseGradient(fDistance, 105.0f, 52.5f);
+        float fDistance_Medium = FuzzyFunctions.Triangle(fDistance, 52.5f, 105.0f, 157.5f);
+        float fDistance_Far = FuzzyFunctions.Gradient(fDistance, 105.0f, 157.5f);
 
-        //Todo: Add code here.
+        //Ai tank is always to the right, so negative wind (<<<<) is with us, positive wind (>>>>>) is against.
+        float fWindStrength = environment.fWindStrength;
 
+        //We need to shift the wind into a positive bracket.
+        fWindStrength += Environment.kMaxWindStrength;
+
+        //The fuzzy sets are also offset by the same margin so we are only dealing with positive values
+        float fWind_Fast_With = FuzzyFunctions.ReverseGradient(fWindStrength, Environment.kMaxWindStrength - 2.5f, Environment.kMaxWindStrength - 5.0f);
+        float fWind_Slow_With = FuzzyFunctions.Triangle(fWindStrength, Environment.kMaxWindStrength - 5.0f, Environment.kMaxWindStrength - 2.5f, Environment.kMaxWindStrength + 2.5f);
+        float fWind_Slow_Against = FuzzyFunctions.Triangle(fWindStrength, Environment.kMaxWindStrength - 2.5f, Environment.kMaxWindStrength + 2.5f, Environment.kMaxWindStrength + 5.0f);
+        float fWind_Fast_Against = FuzzyFunctions.Gradient(fWindStrength, Environment.kMaxWindStrength + 2.5f, Environment.kMaxWindStrength + 5.0f);
+
+        //----------------------------------------------------------------------------------------------
+        //Get Fuzzy rule values.
+        float fRule1 = FuzzyFunctions.AND(fDistance_Near, fWind_Fast_Against);
+        float fRule2 = FuzzyFunctions.AND(fDistance_Medium, fWind_Fast_Against);
+        float fRule3 = FuzzyFunctions.AND(fDistance_Far, fWind_Fast_Against);
+
+        float fRule4 = FuzzyFunctions.AND(fDistance_Near, fWind_Slow_Against);
+        float fRule5 = FuzzyFunctions.AND(fDistance_Medium, fWind_Slow_Against);
+        float fRule6 = FuzzyFunctions.AND(fDistance_Far, fWind_Slow_Against);
+
+        float fRule7 = FuzzyFunctions.AND(fDistance_Near, fWind_Slow_With);
+        float fRule8 = FuzzyFunctions.AND(fDistance_Medium, fWind_Slow_With);
+        float fRule9 = FuzzyFunctions.AND(fDistance_Far, fWind_Slow_With);
+
+        float fRule10 = FuzzyFunctions.AND(fDistance_Near, fWind_Fast_With);
+        float fRule11 = FuzzyFunctions.AND(fDistance_Medium, fWind_Fast_With);
+        float fRule12 = FuzzyFunctions.AND(fDistance_Far, fWind_Fast_With);
+
+        //----------------------------------------------------------------------------------------------
+        //Get Fuzzy membership to output set.
+        float fPower_Light = FuzzyFunctions.OR(fRule4, FuzzyFunctions.OR(fRule7, FuzzyFunctions.OR(fRule10, fRule11)));
+        float fPower_Medium = FuzzyFunctions.OR(fRule1,FuzzyFunctions.OR(fRule5, FuzzyFunctions.OR(fRule6, FuzzyFunctions.OR(fRule8, FuzzyFunctions.OR(fRule9, fRule12)))));
+        float fPower_Strong = FuzzyFunctions.OR(fRule2, fRule3);
+
+        //We don't need to defuzzify these results. Instead we will just take the highest.
+        if(fPower_Light > fPower_Medium && fPower_Light > fPower_Strong)
+        {
+            //We want a light shot - Randomly choose a light power in the relevant range.
+            fDesiredPower = Random.Range(kMinPowerRange, kLowPowerRange);
+        }
+        else if(fPower_Medium > fPower_Strong)
+        {
+            //We want a medium shot - Randomly choose a medium power in the relevant range.
+            fDesiredPower = Random.Range(kLowPowerRange, kMediumPowerRange);
+        }
+        else
+        {
+            //We must want a strong shot - Randomly choose a strong power in the relevant range.
+            fDesiredPower = Random.Range(kMediumPowerRange, kStrongPowerRange);
+        }
 
         //We now have our power.
         bChosenPower = true;
@@ -172,3 +291,4 @@ public class TankPlayerAi : TankPlayer
 
     //--------------------------------------------------------------------------------------------------
 }
+*/

@@ -5,14 +5,14 @@ using UnityEngine;
 public class Alien : MonoBehaviour
 {
     [SerializeField] private GameObject foodImage = null;
- 
-    public float    fDelayBetweenMoves          = 1.0f;
-    public int      numberOfMovesUntilDeath     = 150;
 
-    private bool    bHaveFood                   = false;
-    private int     currentMoveCount            = 0;
-    private float   fCurrentDelayBetweenMoves   = 0.0f;
-    public float    fCoolDownAmount             = -0.01f;
+    public float fDelayBetweenMoves = 1.0f;
+    public int numberOfMovesUntilDeath = 150;
+
+    private bool bHaveFood = false;
+    private int currentMoveCount = 0;
+    private float fCurrentDelayBetweenMoves = 0.0f;
+    public float fCoolDownAmount = -0.01f;
 
     private eAlienMovementDirection previousDirection = eAlienMovementDirection.Left;
 
@@ -41,7 +41,7 @@ public class Alien : MonoBehaviour
         fCurrentDelayBetweenMoves -= Time.deltaTime;
 
         //Time to move.
-        if(fCurrentDelayBetweenMoves <= 0.0)
+        if (fCurrentDelayBetweenMoves <= 0.0)
         {
             //reset the delay.
             fCurrentDelayBetweenMoves = fDelayBetweenMoves;
@@ -105,11 +105,124 @@ public class Alien : MonoBehaviour
         {
             //Search for Food.
 
+            do
+            {
+                //Get the lowest scoring direction.
+                float fLowestValue = 1.0f;
+                int bestIndex = -1;
+
+                //Loop through array.
+                for (int index = 0; index <= 3; index++)
+                {
+                    //Ensure this value is a legitimate number.
+                    if (!float.IsNaN(values[index]))
+                    {
+                        //If we haven't recorded a value yet, take this one.
+                        if (bestIndex == -1)
+                        {
+                            fLowestValue = values[index];
+                            bestIndex = index;
+                        }
+                        else
+                        {
+                            //Do we have a new best score?
+                            if (values[index] < fLowestValue)
+                            {
+                                fLowestValue = values[index];
+                                bestIndex = index;
+                            }
+                        }
+                    }
+                }
+
+                SetDesiredPositions((eAlienMovementDirection)bestIndex, ref desiredRow, ref desiredCol);
+                previousDirection = (eAlienMovementDirection)bestIndex;
+
+                //Is the desired move a valid move?
+                bFoundAValidMove = IsAValidMove(desiredRow, desiredCol);
+
+            } while (bFoundAValidMove == false);
+
+            //Heat up current position whilst searching for food to lay trail to return home.
+            float fHeat = ((float)(numberOfMovesUntilDeath - currentMoveCount)) / (float)numberOfMovesUntilDeath;
+            AdjustHeat(fHeat);
+
+            //Check if this position is the food.
+            CheckForFood();
         }
         else
         {
             //Follow heat of the grid to get home.
 
+            //Get the highest scoring direction.
+            bool bAllDirectionsScoredZero = true;
+            float fHighestValue = -1.0f;
+            int bestIndex = -1;
+
+            //Loop through array.
+            for (int index = 0; index <= 3; index++)
+            {
+                //Ensure this value is a legitimate number.
+                if (!float.IsNaN(values[index]))
+                {
+                    //If we haven't recorded a value yet, take this one.
+                    if (bestIndex == -1)
+                    {
+                        fHighestValue = values[index];
+                        bestIndex = index;
+                    }
+                    else
+                    {
+                        //Do we have a new best score?
+                        if (values[index] > fHighestValue)
+                        {
+                            fHighestValue = values[index];
+                            bestIndex = index;
+                        }
+                    }
+                }
+
+                //If we find a value greater than zero, we know we have a direction to head in.
+                if (values[index] > 0.0f) { bAllDirectionsScoredZero = false; }
+            }
+
+            //Did we find a diretion that was hot?
+            if (bAllDirectionsScoredZero == false)
+            {
+                SetDesiredPositions((eAlienMovementDirection)bestIndex, ref desiredRow, ref desiredCol);
+            }
+            else
+            {
+                //Just keep moving.
+                do
+                {
+                    //Keep moving in previous direction until we hit an obstacle.
+                    SetDesiredPositions(previousDirection, ref desiredRow, ref desiredCol);
+
+                    //Is the desired move a valid move?
+                    bFoundAValidMove = IsAValidMove(desiredRow, desiredCol);
+
+                    if (bFoundAValidMove == false)
+                    {
+                        //Rotate through available moves.
+                        if (previousDirection + 1 == eAlienMovementDirection.MaxMoves)
+                        {
+                            previousDirection = eAlienMovementDirection.Right;
+                        }
+                        else
+                        {
+                            previousDirection++;
+                        }
+                    }
+
+                } while (bFoundAValidMove == false);
+            }
+
+            //Check if we got home with food.
+            CheckForHome();
+
+            //Cool down current position just a little whilst searching for home.
+            AdjustHeat(fCoolDownAmount);
         }
 
         //Make the move.
@@ -117,7 +230,7 @@ public class Alien : MonoBehaviour
 
         //An alien can only move so many times before dying.
         currentMoveCount++;
-        if(currentMoveCount > numberOfMovesUntilDeath)
+        if (currentMoveCount > numberOfMovesUntilDeath)
         {
             Destroy(gameObject);
         }
@@ -161,7 +274,7 @@ public class Alien : MonoBehaviour
             HeatmapCell cell = currentCellGO.GetComponent<HeatmapCell>();
             if (cell != null)
             {
-                cell.SetValue(cell.GetValue()+fValue);
+                cell.SetValue(cell.GetValue() + fValue);
             }
         }
     }
@@ -170,7 +283,7 @@ public class Alien : MonoBehaviour
 
     private float GetCellValue(int iRow, int iColumn)
     {
-        if(IsAValidMove(iRow, iColumn))
+        if (IsAValidMove(iRow, iColumn))
         {
             GameObject currentCellGO = Heatmap.grid[iRow, iColumn];
             if (currentCellGO != null)
@@ -245,8 +358,8 @@ public class Alien : MonoBehaviour
     private bool IsAValidMove(int iRow, int iColumn)
     {
         //First check that we are on the grid.
-        if(iColumn < 0 || iColumn >= Heatmap.Columns) { return false; }
-        if(iRow < 0 || iRow >= Heatmap.Rows) { return false; }
+        if (iColumn < 0 || iColumn >= Heatmap.Columns) { return false; }
+        if (iRow < 0 || iRow >= Heatmap.Rows) { return false; }
 
         //We are on the grid, so check if the cell is accessible.
         GameObject currentCellGO = Heatmap.grid[iRow, iColumn];

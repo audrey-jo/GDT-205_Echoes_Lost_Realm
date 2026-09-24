@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 
 public class Selector_Chase : TreeNode_Base
 {
@@ -8,7 +9,14 @@ public class Selector_Chase : TreeNode_Base
 
     public Selector_Chase()
     {
-        //Delete me.
+        childrenNodes.Add(new Leaf_MoveToPlayer());
+        childrenNodes.Add(new Leaf_MoveAheadOfPlayer());
+        childrenNodes.Add(new Leaf_MoveBehindPlayer());
+        childrenNodes.Add(new Leaf_MoveToRandomPosition());
+
+        //Choose a random index for the next update.
+        System.Random rnd = new System.Random();
+        previousRunningNode = rnd.Next(0, childrenNodes.Count);
     }
 
     //------------------------------------------------------------------------------
@@ -17,9 +25,18 @@ public class Selector_Chase : TreeNode_Base
     {
         ghost.AddToCombinedAIString("Selector_Chase");
 
-        //Delete me.
-        return Status.FAILURE;
+        Status ghostStatus = childrenNodes[previousRunningNode].OnUpdate(ghost, player);
+
+        if (ghostStatus == Status.SUCCESS)
+        {
+            //Choose a random index for the next update.
+            System.Random rnd = new System.Random();
+            previousRunningNode = rnd.Next(0, childrenNodes.Count);
+        }
+
+        return ghostStatus;
     }
 
     //------------------------------------------------------------------------------
 }
+*/

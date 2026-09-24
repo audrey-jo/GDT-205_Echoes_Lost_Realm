@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -163,16 +164,102 @@ public class ChessPlayerAI : ChessPlayer
 
 	int Maximise(ChessBoard boardToTest, int currentSearchDepth, ref Move bestMove, int parentLow)
 	{
-		//Todo: Add code here.
-		return 0;
+		//Reach terminal node so return the heuristic.
+		if (currentSearchDepth == 0)
+		{
+			return ScoreTheBoard(boardToTest);
+		}
+
+		int bestValue = -MaxInt;
+		ChessBoard tempBoard = new ChessBoard();
+		tempBoard.CopyInternalBoard(boardToTest);
+
+		List<Move> moves = new List<Move>();
+		GetAllMoveOptions(tempBoard, colour, ref moves);
+
+		if (moves.Count > 0)
+		{
+			//Go through all move options and return the one with the maximum score.
+			for (int i = 0; i < moves.Count; i++)
+			{
+				//Only check if our best highest is less than parent's low, otherwise stop.
+				//Any further checks resulting positively will only get higher and therefore be 
+				//higher than the parent low, which means they will be discarded.
+				if (bestValue > parentLow)
+				{
+					Debug.Log("MAXIMISE: Pruned");
+					return bestValue;
+				}
+				else
+				{
+					//Reconfigure the board using this move.
+					tempBoard.CopyInternalBoard(boardToTest);
+					tempBoard.MovePiece(moves[i].from_Row, moves[i].from_Col, moves[i].to_Row, moves[i].to_Col);
+
+					//Dig deeper with the board constructed in this new configuration.
+					int value = Minimise(tempBoard, currentSearchDepth - 1, ref bestMove, bestValue);
+					if (value > bestValue)
+					{
+						bestValue = value;
+
+						//Only store moves that are determined at the starting depth.
+						if (currentSearchDepth == searchDepth)
+						{
+							bestMove = moves[i];
+						}
+					}
+				}
+			}
+		}
+
+		return bestValue;
 	}
 
 	//--------------------------------------------------------------------------------------------------
 
 	int Minimise(ChessBoard boardToTest, int currentSearchDepth, ref Move bestMove, int parentHigh)
 	{
-		//Todo: Add code here.
-		return 0;
+		//Reach terminal node so return the heuristic.
+		if (currentSearchDepth == 0)
+		{
+			return ScoreTheBoard(boardToTest);
+		}
+		
+		int bestValue = MaxInt;
+		ChessBoard tempBoard = new ChessBoard();
+		tempBoard.CopyInternalBoard(boardToTest);
+
+		List<Move> moves = new List<Move>();
+		GetAllMoveOptions(tempBoard, colour, ref moves);
+
+		if (moves.Count > 0)
+		{
+			//Go through all move options and return the one with the minimum score.
+			for (int i = 0; i < moves.Count; i++)
+			{
+				//Only check if our best lowest is greater than parent's high, otherwise stop.
+				//Any further checks resulting positively will only get lower and therefore be 
+				//lower than the parent high, which means they will be discarded.
+				if (bestValue < parentHigh)
+				{
+					Debug.Log("MINIMISE: Pruned");
+					return bestValue;
+				}
+				else
+				{
+					//Reconfigure the board using this move.
+					tempBoard.CopyInternalBoard(boardToTest);
+					tempBoard.MovePiece(moves[i].from_Row, moves[i].from_Col, moves[i].to_Row, moves[i].to_Col);
+
+					//Dig deeper with the board constructed in this new configuration.
+					int value = Maximise(tempBoard, currentSearchDepth - 1, ref bestMove, bestValue);
+
+					bestValue = Mathf.Min(bestValue, value);
+				}
+			}
+		}
+
+		return bestValue;
 	}
 
 	//--------------------------------------------------------------------------------------------------
@@ -342,3 +429,4 @@ public class ChessPlayerAI : ChessPlayer
 
 	//--------------------------------------------------------------------------------------------------
 }
+*/

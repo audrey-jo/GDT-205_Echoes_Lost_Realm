@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿/*using UnityEngine;
 class VectorMath
 {
     static public float Dot(Vector2 A, Vector2 B)
@@ -60,4 +60,4 @@ class VectorMath
         }
         return false;
     }
-}
+}*/

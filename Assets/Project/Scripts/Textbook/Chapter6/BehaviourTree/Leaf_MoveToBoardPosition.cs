@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 
 public class Leaf_MoveToBoardPosition : TreeNode_Base
 {
@@ -20,9 +21,23 @@ public class Leaf_MoveToBoardPosition : TreeNode_Base
         //This is for visual debug output.
         ghost.AddToCombinedAIString("Leaf_MoveToBoardPosition");
 
-        //Delete me.
-        return Status.FAILURE;
+        //Set the desired position.
+        ghost.SetTargetBoardPosition(targetPosition);
+
+        //Move the ghost.
+        ghost.Move();
+
+        //Have we reached the target position yet?
+        if (ghost.GetBoardPosition() == targetPosition)
+        {
+            return Status.SUCCESS;
+        }
+        else
+        {
+            return Status.RUNNING;
+        }
     }
 
     //------------------------------------------------------------------------------
 }
+*/

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 
 public class Leaf_ExitHome : TreeNode_Base
 {
@@ -18,9 +19,26 @@ public class Leaf_ExitHome : TreeNode_Base
         //This is for visual debug output.
         ghost.AddToCombinedAIString("Leaf_ExitHome");
 
-        //Delete me.
-        return Status.FAILURE;
+        //Change the visuals of the ghost.
+        ghost.ghostVisuals.SetSpriteSet(SpriteSet.Chasing);
+
+        //Set the desired position.
+        ghost.SetTargetBoardPosition(exitPos);
+
+        //Navigate out of the home.
+        ghost.MoveHome();
+
+        //Return a status to show our progress. (Failure not an option).
+        if (ghost.GetBoardPosition() == exitPos)
+        {
+            return Status.SUCCESS;
+        }
+        else
+        {
+            return Status.RUNNING;
+        }
     }
 
     //------------------------------------------------------------------------------
 }
+*/

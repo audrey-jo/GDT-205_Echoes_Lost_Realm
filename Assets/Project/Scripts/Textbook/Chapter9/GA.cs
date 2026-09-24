@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -174,7 +175,18 @@ public class GA : MonoBehaviour
 
     void GenerationComplete()
     {
-        //Todo: Add code here.
+        //We have completed a generation - Should we evolve the next generation?
+        if (iCurrentGeneration < kMaxNumberOfGenerations)
+        {
+            //Calculate this generations fitness values.
+            CalculateFitness();
+
+            //Evolve the next generation.
+            Evolve();
+
+            //Kick off next generation.
+            RestartGA();
+        }
     }
 
     //--------------------------------------------------------------------------------------
@@ -230,35 +242,141 @@ public class GA : MonoBehaviour
 
     void Selection()
     {
-        //Todo: Add code here.
+        EliteSelection();
+
+        TournamentSelection();
+        //RouletteWheelSelection();
+        //StochasticSelection();
     }
 
     //--------------------------------------------------------------------------------------
 
     void EliteSelection()
     {
-        //Todo: Add code here.
+        //Elite selections go through.
+        for (int currentChromosome = 0; currentChromosome < kNumberofChromosomes; currentChromosome++)
+        {
+            //A fitness of 1 = reached finish line, so 0.9 is good.
+            if (chromosomeFitness[currentChromosome] >= 0.9f)
+            {
+                selectedChromosomes[iNumberOfEliteSelections].Copy(chromosomes[currentChromosome]);
+                iNumberOfEliteSelections++;
+            }
+        }
+
+        //If there is an odd number of elites, lets copy the last and make it an even number.
+        if (iNumberOfEliteSelections % 2 == 1)
+        {
+            selectedChromosomes[iNumberOfEliteSelections].Copy(selectedChromosomes[iNumberOfEliteSelections - 1]);
+            iNumberOfEliteSelections++;
+        }
     }
 
     //--------------------------------------------------------------------------------------------------
 
     void TournamentSelection()
     {
-        //Todo: Add code here.  
+        int combatantCount = 5;
+        int highestIndex;
+
+        //Tournament selection.
+        for (int currentChromosome = iNumberOfEliteSelections; currentChromosome < kNumberofChromosomes; currentChromosome++)
+        {
+            //Select 2 random indexes.
+            highestIndex = Random.Range(0, 100) % kNumberofChromosomes;
+
+            //Loop through the number of combatants.
+            for (int i = 0; i < combatantCount; i++)
+            {
+                int index2 = Random.Range(0, 100) % kNumberofChromosomes;
+
+                if (chromosomeFitness[index2] > chromosomeFitness[highestIndex])
+                {
+                    highestIndex = index2;
+                }
+            }
+
+            //Store the winning chromosome.
+            selectedChromosomes[currentChromosome].Copy(chromosomes[highestIndex]);
+        }
     }
 
     //--------------------------------------------------------------------------------------------------
 
     void RouletteWheelSelection()
     {
-        //Todo: Add code here.
+        double totalFitness = 0.0f;
+        for (int currentChromosome = 0; currentChromosome < kNumberofChromosomes; currentChromosome++)
+        {
+            totalFitness += chromosomeFitness[currentChromosome];
+        }
+
+        int currentIndexInSelectedList = 0;
+        while (currentIndexInSelectedList < kNumberofChromosomes)
+        {
+            double stopPositionOnTheWheel = Random.Range(0.0f, 100.0f);
+            double probability = 0.0f;
+
+            for (int currentChromosome = 0; currentChromosome < kNumberofChromosomes; currentChromosome++)
+            {
+                probability += (chromosomeFitness[currentChromosome] / totalFitness) * 100.0f;
+
+                if (probability > stopPositionOnTheWheel)
+                {
+                    selectedChromosomes[currentIndexInSelectedList].Copy(chromosomes[currentChromosome]);
+
+                    currentIndexInSelectedList++;
+
+                    //Debug.Log("Roulette picked " + i + " : Finess " + chromosomeFitness[currentChromosome]);
+                    break;
+                }
+            }
+        };
     }
 
     //--------------------------------------------------------------------------------------------------
 
     void StochasticSelection()
     {
-        //Todo: Add code here.
+        double totalFitness = 0.0f;
+        for (int currentChromosome = 0; currentChromosome < kNumberofChromosomes; currentChromosome++)
+        {
+            totalFitness += chromosomeFitness[currentChromosome];
+        }
+
+        double stepSize = (double)(totalFitness / kNumberofChromosomes);
+        double currentStep = Random.Range(0,100) % (int)stepSize;
+        int currentChild = 0;
+        int currentParent = 0;
+        double currentFitness = chromosomeFitness[currentParent];
+
+        do
+        {
+            if (currentStep <= currentFitness)
+            {
+                selectedChromosomes[currentChild].Copy(chromosomes[currentParent]);
+
+                currentChild++;
+
+                //Move the step on.
+                currentStep += stepSize;
+
+                Debug.Log("Stochastic picked " + currentParent + " : Finess " + chromosomeFitness[currentParent]);
+            }
+            else
+            {
+                //CurrentStep is larger than current parent fitness, so move it on.
+                if (++currentParent < kNumberofChromosomes)
+                {
+                    currentFitness += chromosomeFitness[currentParent];
+                }
+                else
+                {
+                    //This should never happen.
+                    Debug.LogError("StochasticSelection Error!!!");
+                }
+            }
+        } while (currentChild < kNumberofChromosomes);
     }
 
     //--------------------------------------------------------------------------------------
@@ -307,7 +425,20 @@ public class GA : MonoBehaviour
 
     void Mutation()
     {
-        //Todo: Add code here.
+        //Check for mutation on every element in every Chromosome.
+        for (int currentChromosome = 0; currentChromosome < kNumberofChromosomes; currentChromosome++)
+        {
+            for (int geneIndex = 0; geneIndex < Chromosome.kNumberNofGenes; geneIndex++)
+            {
+                if (Random.Range(0.0f, 100.0f) < kMutationRate)
+                {
+                    //Randomly generate data for gene.
+                    chromosomes[currentChromosome].genes[geneIndex].GenerateRandomGene();
+
+                    //Debug.Log("Mutation occurred");
+                }
+            }
+        }
     }
 
     //--------------------------------------------------------------------------------------
@@ -350,3 +481,4 @@ public class GA : MonoBehaviour
 
     //--------------------------------------------------------------------------------------------------
 }
+*/
