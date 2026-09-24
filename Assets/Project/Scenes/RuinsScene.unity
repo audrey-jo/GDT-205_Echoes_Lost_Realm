@@ -1129,6 +1129,7 @@ GameObject:
   - component: {fileID: 1610450782}
   - component: {fileID: 1610450781}
   - component: {fileID: 1610450784}
+  - component: {fileID: 1610450785}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1179,7 +1180,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 13.2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1254,6 +1255,21 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1610450785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610450780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c32a5cf618c0442bdd05216f74fccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
+  currentTarget: {fileID: 1265555640}
+  offset: {x: 0, y: 0, z: -10}
+  smoothTime: 0.3
 --- !u!1 &1969473041
 GameObject:
   m_ObjectHideFlags: 0
