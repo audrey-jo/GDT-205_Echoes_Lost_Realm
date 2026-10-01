@@ -11,6 +11,7 @@ TagManager:
   - ForestPortal
   - RuinsPortal
   - NextPortal
+  - Button
   layers:
   - Default
   - TransparentFX

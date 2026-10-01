@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 public class SimpleEnemyMovement : MonoBehaviour
 {
@@ -14,10 +13,11 @@ public class SimpleEnemyMovement : MonoBehaviour
     UnityEvent horizontalMovement;
     UnityEvent verticalMovement;
 
-    private float startXPos;
-    private float startYPos;
+    public float xDistance = 5f;
+    public float yDistance = 5f;
 
-    private float sec;
+    private Vector3 initialPosition;
+
 
     private void Start()
     {
@@ -28,8 +28,7 @@ public class SimpleEnemyMovement : MonoBehaviour
         horizontalMovement.AddListener(HorizontalMovement);
         verticalMovement.AddListener(VerticalMovement);
 
-        startXPos = transform.position.x;
-        startYPos = transform.position.y;
+        initialPosition = transform.position;
     }
 
     private void Update()
@@ -46,43 +45,23 @@ public class SimpleEnemyMovement : MonoBehaviour
                 verticalMovement.Invoke();
                 break;
         }
-
-        sec += Time.deltaTime;
     }
 
     public void CircleMovement()
     {
-        Vector3 moveDirection = new Vector3(Mathf.Sin(Time.time), Mathf.Cos(Time.time), 0);
+        Vector3 moveDirection = new(Mathf.Sin(Time.time), Mathf.Cos(Time.time), 0);
         transform.Translate(moveSpeed * Time.deltaTime * moveDirection, Space.World);
     }
 
     public void HorizontalMovement()
     {
-        Vector3 moveDirection = Vector3.left;
-        transform.Translate(moveSpeed * Time.deltaTime * moveDirection, Space.World);
-        if (sec >= 2f)
-        {
-            moveDirection = Vector3.right;
-            transform.Translate(moveSpeed * Time.deltaTime * moveDirection, Space.World);
-            if (sec >= 4f)
-            {
-                sec = 0f;
-            }
-        }
+        float baseZero = initialPosition.x + Mathf.PingPong(Time.time * moveSpeed, xDistance);
+        transform.position = new Vector3(baseZero, transform.position.y, transform.position.z);
     }
 
     public void VerticalMovement()
     {
-        Vector3 moveDirection = Vector3.up;
-        transform.Translate(moveSpeed * Time.deltaTime * moveDirection, Space.World);
-        if (sec >= 2f)
-        {
-            moveDirection = Vector3.down;
-            transform.Translate(moveSpeed * Time.deltaTime * moveDirection, Space.World);
-            if (sec >= 4f)
-            {
-                sec = 0f;
-            }
-        }
+        float baseZero = initialPosition.y + Mathf.PingPong(Time.time * moveSpeed, yDistance);
+        transform.position = new Vector3(transform.position.x, baseZero, transform.position.z);
     }
 }
