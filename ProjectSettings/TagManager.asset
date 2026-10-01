@@ -8,8 +8,8 @@ TagManager:
   - Obstacle
   - Environment
   - Enemy
-  - Portal
   - ForestPortal
+  - RuinsPortal
   - NextPortal
   layers:
   - Default

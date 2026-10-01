@@ -1974,6 +1974,50 @@ Transform:
   - {fileID: 1035314500}
   m_Father: {fileID: 997424202}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &41183285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 41183287}
+  - component: {fileID: 41183286}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &41183286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41183285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06e246b8bfe663147813f9b9f4da953b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneManager
+--- !u!4 &41183287
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 41183285}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 381.58875, y: 181.89133, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &44248073
 GameObject:
   m_ObjectHideFlags: 0
@@ -17938,6 +17982,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dcbbaf93f05e904c98efa6a88505af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AriaCollisions
+  sceneManager: {fileID: 0}
 --- !u!1 &366478697
 GameObject:
   m_ObjectHideFlags: 0
@@ -66884,7 +66929,7 @@ GameObject:
   - component: {fileID: 1318521525}
   m_Layer: 0
   m_Name: Portal
-  m_TagString: Portal
+  m_TagString: RuinsPortal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85144,8 +85189,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1665473766}
   - component: {fileID: 1665473768}
-  - component: {fileID: 1665473767}
   - component: {fileID: 1665473769}
+  - component: {fileID: 1665473770}
   m_Layer: 6
   m_Name: Evil Spirit
   m_TagString: Enemy
@@ -85168,20 +85213,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1620149404}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1665473767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665473765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6e428aa351730a49af147bd68d71fd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  moveSpeed: 5
-  movementType: 2
 --- !u!212 &1665473768
 SpriteRenderer:
   serializedVersion: 2
@@ -85287,6 +85318,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1665473770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665473765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8300000b29ca4d4ab2c8d0916a08ba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleEnemyMovement
+  moveSpeed: 5
+  movementType: 2
 --- !u!1 &1666777785
 GameObject:
   m_ObjectHideFlags: 0
@@ -93309,8 +93354,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1808861551}
   - component: {fileID: 1808861550}
-  - component: {fileID: 1808861549}
   - component: {fileID: 1808861552}
+  - component: {fileID: 1808861553}
   m_Layer: 6
   m_Name: Evil Spirit
   m_TagString: Enemy
@@ -93318,20 +93363,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1808861549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1808861548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6e428aa351730a49af147bd68d71fd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  moveSpeed: 5
-  movementType: 0
 --- !u!212 &1808861550
 SpriteRenderer:
   serializedVersion: 2
@@ -93452,6 +93483,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1808861553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808861548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8300000b29ca4d4ab2c8d0916a08ba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleEnemyMovement
+  moveSpeed: 5
+  movementType: 0
 --- !u!1 &1810605546
 GameObject:
   m_ObjectHideFlags: 0
@@ -98961,8 +99006,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1906876551}
   - component: {fileID: 1906876553}
-  - component: {fileID: 1906876552}
   - component: {fileID: 1906876554}
+  - component: {fileID: 1906876555}
   m_Layer: 6
   m_Name: Evil Spirit
   m_TagString: Enemy
@@ -98985,20 +99030,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1620149404}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1906876552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1906876550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6e428aa351730a49af147bd68d71fd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  moveSpeed: 3
-  movementType: 2
 --- !u!212 &1906876553
 SpriteRenderer:
   serializedVersion: 2
@@ -99104,6 +99135,20 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1906876555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906876550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8300000b29ca4d4ab2c8d0916a08ba6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleEnemyMovement
+  moveSpeed: 5
+  movementType: 2
 --- !u!1 &1906927588
 GameObject:
   m_ObjectHideFlags: 0
@@ -110993,3 +111038,4 @@ SceneRoots:
   - {fileID: 1888298569}
   - {fileID: 1620149404}
   - {fileID: 1481185644}
+  - {fileID: 41183287}

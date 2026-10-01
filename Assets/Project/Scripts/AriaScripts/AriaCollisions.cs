@@ -2,23 +2,36 @@ using UnityEngine;
 
 public class AriaCollisions : MonoBehaviour
 {
+    public SceneManager sceneManager;
+
+    public void Start()
+    {
+        sceneManager = FindFirstObjectByType<SceneManager>();
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Aria collided with an enemy!");
-            // Handle collision with enemy
+            sceneManager.LoadScene("MenuScene");
         }
-
-        
     }
 
     private void OnTriggerEnter2D(UnityEngine.Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Portal"))
+        if (collision.gameObject.CompareTag("ForestPortal"))
         {
-            Debug.Log("Aria collided with the portal!");
-            // Handle collision with portal
+            sceneManager.LoadScene("ForestScene");
+        }
+
+        if (collision.gameObject.CompareTag("RuinsPortal"))
+        {
+            sceneManager.LoadScene("RuinsScene");
+        }
+
+        if (collision.gameObject.CompareTag("NextPortal"))
+        {
+            Debug.Log("Aria collided with the next portal!");
+            Debug.Log("Next level not set up yet");
         }
     }
 }
