@@ -9,6 +9,8 @@ TagManager:
   - Environment
   - Enemy
   - Portal
+  - ForestPortal
+  - NextPortal
   layers:
   - Default
   - TransparentFX
