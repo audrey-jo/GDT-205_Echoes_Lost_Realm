@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/Scenes/RuinsScene.unity
     guid: e46544d81a5ab694785993b5c25e19e3
+  - enabled: 1
+    path: Assets/Project/Scenes/TempleScene.unity
+    guid: 0e95c1a3cdec3de4090ff6fa92faa57f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 57a2ccc946411c94c82e47dd25123663, type: 3}

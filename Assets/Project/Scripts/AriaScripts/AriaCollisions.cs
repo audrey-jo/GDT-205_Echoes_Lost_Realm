@@ -6,7 +6,7 @@ public class AriaCollisions : MonoBehaviour
 
     public void Start()
     {
-        sceneManager = FindFirstObjectByType<SceneManager>();
+        sceneManager = FindAnyObjectByType<SceneManager>();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -28,10 +28,9 @@ public class AriaCollisions : MonoBehaviour
             sceneManager.LoadScene("RuinsScene");
         }
 
-        if (collision.gameObject.CompareTag("NextPortal"))
+        if (collision.gameObject.CompareTag("TemplePortal"))
         {
-            Debug.Log("Aria collided with the next portal!");
-            Debug.Log("Next level not set up yet");
+            sceneManager.LoadScene("TempleScene");
         }
     }
 }
