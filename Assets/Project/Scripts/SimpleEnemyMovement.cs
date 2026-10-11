@@ -9,25 +9,15 @@ public class SimpleEnemyMovement : MonoBehaviour
     [Header("0: Circle, 1: Horizontal, 2: Vertical")]
     [SerializeField] int movementType = 0;
 
-    UnityEvent circleMovement;
-    UnityEvent horizontalMovement;
-    UnityEvent verticalMovement;
+    public float distance = 5f;
 
-    public float xDistance = 5f;
-    public float yDistance = 5f;
+    [Header("Direction")]
+    public float direction = 1f;
 
     private Vector3 initialPosition;
 
-
     private void Start()
     {
-        circleMovement = new UnityEvent();
-        horizontalMovement = new UnityEvent();
-        verticalMovement = new UnityEvent();
-        circleMovement.AddListener(CircleMovement);
-        horizontalMovement.AddListener(HorizontalMovement);
-        verticalMovement.AddListener(VerticalMovement);
-
         initialPosition = transform.position;
     }
 
@@ -36,13 +26,13 @@ public class SimpleEnemyMovement : MonoBehaviour
         switch (movementType)
         {
             case 0:
-                circleMovement.Invoke();
+                CircleMovement();
                 break;
             case 1:
-                horizontalMovement.Invoke();
+                HorizontalMovement();
                 break;
             case 2:
-                verticalMovement.Invoke();
+                VerticalMovement();
                 break;
         }
     }
@@ -55,13 +45,13 @@ public class SimpleEnemyMovement : MonoBehaviour
 
     public void HorizontalMovement()
     {
-        float baseZero = initialPosition.x + Mathf.PingPong(Time.time * moveSpeed, xDistance);
+        float baseZero = initialPosition.x + Mathf.PingPong(Time.time * moveSpeed, distance) * direction;
         transform.position = new Vector3(baseZero, transform.position.y, transform.position.z);
     }
 
     public void VerticalMovement()
     {
-        float baseZero = initialPosition.y + Mathf.PingPong(Time.time * moveSpeed, yDistance);
+        float baseZero = initialPosition.y + Mathf.PingPong(Time.time * moveSpeed, distance) * direction;
         transform.position = new Vector3(transform.position.x, baseZero, transform.position.z);
     }
 }

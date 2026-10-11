@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
 
     private Vector3 currentVelocity = Vector3.zero;
 
-    void Update()
+    void LateUpdate()
     {
         if (currentTarget == null) return;
 

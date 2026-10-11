@@ -3,6 +3,7 @@ using UnityEngine;
 public class AriaCollisions : MonoBehaviour
 {
     public SceneManager sceneManager;
+    public GameObject spawnPoint;
 
     public void Start()
     {
@@ -12,11 +13,11 @@ public class AriaCollisions : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            sceneManager.LoadScene("MenuScene");
+            transform.position = spawnPoint.transform.position;
         }
     }
 
-    private void OnTriggerEnter2D(UnityEngine.Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("ForestPortal"))
         {
