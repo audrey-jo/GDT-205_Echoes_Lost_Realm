@@ -12,9 +12,6 @@ TagManager:
   - RuinsPortal
   - Button
   - TemplePortal
-  - NextPortal
-  - Node
-  - Door
   layers:
   - Default
   - TransparentFX
@@ -23,7 +20,7 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - Friend
+  - 
   - 
   - 
   - 
