@@ -24,25 +24,32 @@ public class PathDemo : MonoBehaviour
 
     void Start()
     {
+        // Finds each node and adds it to the node list
         foreach (Transform child in waypointParent)
             graph.AllNodes.Add(new PathNode(child.position));
 
+        // Finds all available nodes and links neighbors together
         graph.UpdateWalkability(wallMask, agentRadius);
         graph.LinkProximityNeighbors(linkDistance, wallMask, agentRadius);
 
+        // Marks the target destination and sets the agent's starting position
         target = graph.AllNodes[targetIndex];
         agent.transform.position = graph.AllNodes[startIndex].Position;
+        // Finds the first path to the destination
         Repath();
     }
 
     void Update()
     {
+        // Recalculates path every 0.25 seconds
         timer += Time.deltaTime;
         if (timer < repathInterval) return;
         timer = 0f;
 
+        // Figures out what nodes are being blocked by enemies
         graph.UpdateEnemyBlocking(enemyMask, enemyAvoidRadius);
 
+        // If the agent is moving and the path ahead isn't blocked, it won't repath
         if (agent.IsMoving && !PathBlocked()) return;
 
         Repath();
@@ -50,15 +57,20 @@ public class PathDemo : MonoBehaviour
 
     bool PathBlocked()
     {
+        // Gets the path and chooses the nodes that it will check
         var path = agent.CurrentPath;
         int end = Mathf.Min(path.Count, agent.PathIndex + lookAhead);
+        // Returns if PathIndex is out of range
         if (agent.PathIndex >= path.Count) return false;
 
+        // Finds the agent's position and the direction of the next node
         Vector2 pos = agent.transform.position;
         Vector2 delta = path[agent.PathIndex].Position - pos;
+        // Checks if there's anything blocking and returns that the path is blocked if there is
         if (Physics2D.CircleCast(pos, agentRadius, delta.normalized, delta.magnitude, enemyMask).collider != null)
             return true;
 
+        // Checks for enemies and edges
         for (int i = agent.PathIndex; i < end; i++)
         {
             if (path[i].IsBlockedByEnemy) return true;
@@ -69,12 +81,17 @@ public class PathDemo : MonoBehaviour
 
     void Repath()
     {
+        // Finds starting position of repath
+        // If agent.LastNode is null, it'll find the nearest node
+        // Useful for the very first time this runs when the agent first starts
         PathNode start = agent.LastNode ?? graph.GetNearestNode(agent.transform.position);
 
         if (start == null) return;
 
+        // If the agent is already at its destination
         if (!agent.IsMoving && start == target) return;
 
+        // Resets node costs (since it's calculating new costs now) and finds the path
         graph.ResetNodes();
         var path = pathfinder.FindPath(start, target);
 
@@ -84,12 +101,14 @@ public class PathDemo : MonoBehaviour
             return;
         }
         
+        // Sets the new starting position for the new path and has the agent follow the path
         path.Insert(0, start);
         agent.FollowPath(path, speed);
     }
 
     private void OnDrawGizmos()
     {
+        // Debugging visuals
         if (graph == null) return;
 
         Gizmos.color = Color.yellow;
