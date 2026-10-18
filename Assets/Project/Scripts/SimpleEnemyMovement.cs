@@ -16,6 +16,8 @@ public class SimpleEnemyMovement : MonoBehaviour
 
     private Vector3 initialPosition;
 
+    public PathDemo demo;
+
     private void Start()
     {
         initialPosition = transform.position;
@@ -53,5 +55,13 @@ public class SimpleEnemyMovement : MonoBehaviour
     {
         float baseZero = initialPosition.y + Mathf.PingPong(Time.time * moveSpeed, distance) * direction;
         transform.position = new Vector3(transform.position.x, baseZero, transform.position.z);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (demo == null) return;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, demo.enemyAvoidRadius);
     }
 }

@@ -12,11 +12,12 @@ TagManager:
   - RuinsPortal
   - Button
   - TemplePortal
+  - NextPortal
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Obstacle
+  - Wall
   - Water
   - UI
   - Enemy

@@ -1,16 +1,22 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public class PathNode : MonoBehaviour
+public class PathNode
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public Vector2 Position;
+    public bool IsWalkable;
+    public bool IsBlockedByEnemy;
+    public List<PathNode> Neighbors = new();
 
-    // Update is called once per frame
-    void Update()
+    public float gCost;
+    public float hCost;
+    public float FCost => gCost + hCost;
+
+    public PathNode parent;
+
+    public PathNode(Vector2 position, bool isWalkable = true)
     {
-        
+        Position = position;
+        IsWalkable = isWalkable;
     }
 }
