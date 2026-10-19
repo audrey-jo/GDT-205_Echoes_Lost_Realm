@@ -3,20 +3,21 @@ using UnityEngine;
 public class AriaCollisions : MonoBehaviour
 {
     public SceneManager sceneManager;
+    public GameObject spawnPoint;
 
     public void Start()
     {
-        sceneManager = FindFirstObjectByType<SceneManager>();
+        sceneManager = FindAnyObjectByType<SceneManager>();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            sceneManager.LoadScene("MenuScene");
+            transform.position = spawnPoint.transform.position;
         }
     }
 
-    private void OnTriggerEnter2D(UnityEngine.Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("ForestPortal"))
         {
@@ -28,10 +29,9 @@ public class AriaCollisions : MonoBehaviour
             sceneManager.LoadScene("RuinsScene");
         }
 
-        if (collision.gameObject.CompareTag("NextPortal"))
+        if (collision.gameObject.CompareTag("TemplePortal"))
         {
-            Debug.Log("Aria collided with the next portal!");
-            Debug.Log("Next level not set up yet");
+            sceneManager.LoadScene("TempleScene");
         }
     }
 }
