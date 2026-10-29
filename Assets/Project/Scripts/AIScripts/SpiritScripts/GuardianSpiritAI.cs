@@ -96,7 +96,7 @@ public class GuardianSpiritAI : MonoBehaviour
 
     private bool hasWanderTarget = false;
 
-    [SerializeField] private string currentBehavior = "Seek Aria";
+    //[SerializeField] private string currentBehavior = "Seek Aria";
 
 
     // START
@@ -139,7 +139,7 @@ public class GuardianSpiritAI : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
 
-            currentBehavior = "No Aria";
+            //currentBehavior = "No Aria";
 
             return;
         }
@@ -171,7 +171,7 @@ public class GuardianSpiritAI : MonoBehaviour
             // Run faster from enemies
             desiredSpeed = enemyRunSpeed;
 
-            currentBehavior = "Flee Enemy";
+            //currentBehavior = "Flee Enemy";
         }
 
 
@@ -184,7 +184,7 @@ public class GuardianSpiritAI : MonoBehaviour
 
             desiredSpeed = maxSpeed;
 
-            currentBehavior = "Seek Aria";
+            //currentBehavior = "Seek Aria";
 
             // Pick a new wander point later
             hasWanderTarget = false;
@@ -199,7 +199,7 @@ public class GuardianSpiritAI : MonoBehaviour
 
             desiredSpeed = wanderSpeed;
 
-            currentBehavior = "Wander Around Aria";
+            //currentBehavior = "Wander Around Aria";
         }
 
 

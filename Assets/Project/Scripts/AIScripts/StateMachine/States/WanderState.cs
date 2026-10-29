@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Wander : IMinionState
+public class WanderState : IMinionState
 {
     Minion minion;
 
@@ -9,18 +9,16 @@ public class Wander : IMinionState
     float wanderChangeInterval;
     float wanderPointReachedDistance;
     float wanderTimer;
-    bool hasWanderTarget;
+    bool hasWanderPoint;
     float acceleration;
 
-    Vector2 wanderTarget;
-    Transform boss;
+    Vector2 wanderPoint;
 
-    public Wander(Minion minionController) { minion = minionController; }
+    public WanderState(Minion minionController) { minion = minionController; }
 
     public void Enter()
     {
         minion.currentSpeed = minion.wanderSpeed;
-        boss = GameObject.Find("Boss").GetComponent<Transform>();
 
         minWanderDistance = minion.minWanderDistance;
         wanderRadius = minion.wanderRadius;
@@ -39,25 +37,18 @@ public class Wander : IMinionState
         minion.rb.linearVelocity = Vector2.MoveTowards(minion.rb.linearVelocity, desiredVelocity, acceleration * Time.fixedDeltaTime);
     }
 
-    public void Exit()
-    {
-
-    }
-
     private Vector2 CalculateWander()
     {
         wanderTimer -= Time.fixedDeltaTime;
 
-        bool reachedWanderTarget = hasWanderTarget && Vector2.Distance(minion.rb.position, wanderTarget) <= wanderPointReachedDistance;
+        bool reachedWanderTarget = hasWanderPoint && Vector2.Distance(minion.rb.position, wanderPoint) <= wanderPointReachedDistance;
+        bool wanderPointTooFar = hasWanderPoint && Vector2.Distance(wanderPoint, minion.wanderTarget.position) > wanderRadius;
+        bool wanderPointTooClose = hasWanderPoint && Vector2.Distance(wanderPoint, minion.wanderTarget.position) < minWanderDistance;
 
-        bool wanderPointTooFar = hasWanderTarget && Vector2.Distance(wanderTarget, boss.position) > wanderRadius;
-
-        bool wanderPointTooClose = hasWanderTarget && Vector2.Distance(wanderTarget, boss.position) < minWanderDistance;
-
-        if (!hasWanderTarget || wanderTimer <= 0f || reachedWanderTarget ||
+        if (!hasWanderPoint || wanderTimer <= 0f || reachedWanderTarget ||
             wanderPointTooFar || wanderPointTooClose) ChooseNewWanderTarget();
 
-        Vector2 directionToTarget = wanderTarget - minion.rb.position;
+        Vector2 directionToTarget = wanderPoint - minion.rb.position;
 
         return directionToTarget.normalized;
     }
@@ -65,13 +56,12 @@ public class Wander : IMinionState
     private void ChooseNewWanderTarget()
     {
         Vector2 randomDirection = Random.insideUnitCircle.normalized;
-
         float randomDistance = Random.Range(minWanderDistance, wanderRadius);
 
-        wanderTarget = (Vector2) boss.position + randomDirection * randomDistance;
-
+        wanderPoint = (Vector2) minion.wanderTarget.position + randomDirection * randomDistance;
         wanderTimer = wanderChangeInterval;
-
-        hasWanderTarget = true;
+        hasWanderPoint = true;
     }
+
+    public void Exit() { }
 }

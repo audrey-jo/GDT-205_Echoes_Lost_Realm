@@ -349,10 +349,7 @@ public class TerrainMaps : MonoBehaviour
         if (danger == null)
             return;
 
-        TerrainZone[] zones = FindObjectsByType<TerrainZone>(
-            FindObjectsInactive.Exclude,
-            FindObjectsSortMode.None
-        );
+        TerrainZone[] zones = FindObjectsByType<TerrainZone>();
 
         Physics2D.SyncTransforms();
 
