@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Minion : MonoBehaviour
@@ -7,17 +8,16 @@ public class Minion : MonoBehaviour
     public float maxHealth;
     public float damageDealt;
     public float retreatHealth;
-    public float chaseHealth;
 
     [Header("Movement")]
 
-    public float maxSpeed;
-    public float currentSpeed;
+    
     public float acceleration;
 
     [Header("Wander")]
 
     public Transform wanderTarget;
+
     public float wanderSpeed;
     public float minWanderDistance;
     public float wanderRadius;
@@ -28,11 +28,14 @@ public class Minion : MonoBehaviour
     [Header("Chase")]
 
     public Transform chaseTarget;
+
     public float chaseSpeed;
+    public float chaseRange = 50f;
 
     [Header("Retreat")]
 
     public Transform retreatTarget;
+
     public LayerMask ariaLayer;
     public float ariaAvoidanceDistance;
     public float ariaAvoidanceStrength;
@@ -45,6 +48,8 @@ public class Minion : MonoBehaviour
     public float obstacleAvoidanceStrength;
     public float sideRayAngle;
 
+    [HideInInspector] public float currentSpeed;
+
     [HideInInspector] public Rigidbody2D rb;
     [HideInInspector] public Collider2D spiritCollider;
     [HideInInspector] public Collider2D ariaCollider;
@@ -56,7 +61,14 @@ public class Minion : MonoBehaviour
     public RetreatState retreatState;
 
     Vector2 steeringDirection;
-    float currentHealth;
+    [HideInInspector] public float currentHealth;
+
+    public static event Action OnDeath;
+
+    private void OnEnable()
+    {
+        SpawnedObject.HitEnemy += TakeDamage;
+    }
 
     void Start()
     {
@@ -82,15 +94,25 @@ public class Minion : MonoBehaviour
         currentState?.Enter();
     }
 
+    private void OnDisable()
+    {
+        SpawnedObject.HitEnemy -= TakeDamage;
+    }
+
     // STAT UPDATES
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         if (currentHealth <= 0) Deactivate();
+        if (currentHealth <= retreatHealth) ChangeState(retreatState);
     }
 
-    public void Deactivate() { gameObject.SetActive(false); }
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+        OnDeath?.Invoke();
+    }
 
     public void Activate()
     {
@@ -98,14 +120,6 @@ public class Minion : MonoBehaviour
         currentHealth = maxHealth;
         ChangeState(wanderState);
     }
-
-    // STATE CHANGES
-
-    public void Wander() { ChangeState(wanderState); }
-
-    public void Chase() { ChangeState(chaseState); }
-
-    public void Retreat() { ChangeState(retreatState); }
 
     // MOVEMENT
 

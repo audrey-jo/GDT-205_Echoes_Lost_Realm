@@ -1,3 +1,4 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 public class WanderState : IMinionState
@@ -13,6 +14,7 @@ public class WanderState : IMinionState
     float acceleration;
 
     Vector2 wanderPoint;
+    float healthNum;
 
     public WanderState(Minion minionController) { minion = minionController; }
 
@@ -29,12 +31,25 @@ public class WanderState : IMinionState
 
     public void UpdateLogic()
     {
+        healthNum += 0.1f;
+        if (healthNum >= 1)
+        {
+            minion.currentHealth = Mathf.Min(minion.currentHealth + 1, minion.maxHealth);
+            healthNum = 0;
+        }
+
+        Debug.Log("updated health!");
+        Debug.Log(minion.currentHealth);
+
         Vector2 steeringDirection = CalculateWander();
 
         if (steeringDirection.sqrMagnitude > 0.001f) steeringDirection.Normalize();
 
         Vector2 desiredVelocity = steeringDirection * minion.currentSpeed;
         minion.rb.linearVelocity = Vector2.MoveTowards(minion.rb.linearVelocity, desiredVelocity, acceleration * Time.fixedDeltaTime);
+
+        if (minion.GetDistance(minion.transform.position, minion.chaseTarget.position) <= minion.chaseRange &&
+            minion.currentHealth > minion.retreatHealth) minion.ChangeState(minion.chaseState);
     }
 
     private Vector2 CalculateWander()

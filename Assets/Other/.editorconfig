@@ -1,0 +1,2 @@
+[*.cs]
+dotnet_diagnostic.UAC1001.severity = none

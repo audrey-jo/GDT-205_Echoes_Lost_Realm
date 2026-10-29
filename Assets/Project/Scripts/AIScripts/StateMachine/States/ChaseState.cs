@@ -16,6 +16,9 @@ public class ChaseState : IMinionState
 
         Vector2 desiredVelocity = steeringDirection * minion.currentSpeed;
         minion.rb.linearVelocity = Vector2.MoveTowards(minion.rb.linearVelocity, desiredVelocity, minion.acceleration * Time.fixedDeltaTime);
+
+        if (minion.GetDistance(minion.transform.position, minion.retreatTarget.position) > minion.chaseRange + 5)
+            minion.ChangeState(minion.wanderState);
     }
 
     public void Exit() { }
