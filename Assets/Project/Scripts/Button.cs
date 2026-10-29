@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ButtonScript : MonoBehaviour
+public class Button : MonoBehaviour
 {
     public GameObject portal;
     void Start()

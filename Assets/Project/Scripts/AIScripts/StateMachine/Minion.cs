@@ -66,9 +66,7 @@ public class Minion : MonoBehaviour
         chaseState = new ChaseState(this);
         retreatState = new RetreatState(this);
 
-        Revive();
-
-        ChangeState(wanderState);
+        Activate();
     }
 
     void Update()
@@ -89,15 +87,16 @@ public class Minion : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        if (currentHealth <= 0) Die();
+        if (currentHealth <= 0) Deactivate();
     }
 
-    private void Die() { gameObject.SetActive(false); }
+    public void Deactivate() { gameObject.SetActive(false); }
 
-    private void Revive()
+    public void Activate()
     {
         gameObject.SetActive(true);
         currentHealth = maxHealth;
+        ChangeState(wanderState);
     }
 
     // STATE CHANGES
@@ -110,7 +109,7 @@ public class Minion : MonoBehaviour
 
     // MOVEMENT
 
-    private Vector2 AvoidObstacles(Vector2 movementDirection)
+    protected Vector2 AvoidObstacles(Vector2 movementDirection)
     {
         if (movementDirection.sqrMagnitude < 0.01f) return Vector2.zero;
 
@@ -131,7 +130,7 @@ public class Minion : MonoBehaviour
         return avoidance;
     }
 
-    private Vector2 RotateVector(Vector2 vector, float degrees)
+    protected Vector2 RotateVector(Vector2 vector, float degrees)
     {
         float radians = degrees * Mathf.Deg2Rad;
 
