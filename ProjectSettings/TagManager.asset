@@ -8,11 +8,12 @@ TagManager:
   - Obstacle
   - Environment
   - Enemy
-  - ForestPortal
-  - RuinsPortal
   - Button
-  - TemplePortal
-  - NextPortal
+  - ToForest
+  - ToRuins
+  - ToTemple
+  - ToInnerTemple
+  - ToNext
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
+  - Aria
   - 
   - 
   - 
