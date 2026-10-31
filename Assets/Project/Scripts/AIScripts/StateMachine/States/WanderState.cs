@@ -1,6 +1,7 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
+// Inherits from IMinionState rather than MonoBehavior
 public class WanderState : IMinionState
 {
     Minion minion;
@@ -16,10 +17,14 @@ public class WanderState : IMinionState
     Vector2 wanderPoint;
     float healthNum;
 
+    // Constructor; sets minion to the controller
     public WanderState(Minion minionController) { minion = minionController; }
 
     public void Enter()
     {
+        // Sets everything needed to the values set in the inspector
+        // (can't set states in the inspector since it doesn't inherit from MonoBehavior)
+
         minion.currentSpeed = minion.wanderSpeed;
 
         minWanderDistance = minion.minWanderDistance;
@@ -27,19 +32,17 @@ public class WanderState : IMinionState
         wanderChangeInterval = minion.wanderChangeInterval;
         wanderPointReachedDistance = minion.wanderPointReachedDistance;
         acceleration = minion.acceleration;
+
     }
 
     public void UpdateLogic()
     {
-        healthNum += 0.1f;
+        if (minion.GetDistance(minion.transform.position, minion.wanderTarget.position) <= wanderRadius) healthNum += 0.1f;
         if (healthNum >= 1)
         {
             minion.currentHealth = Mathf.Min(minion.currentHealth + 1, minion.maxHealth);
             healthNum = 0;
         }
-
-        Debug.Log("updated health!");
-        Debug.Log(minion.currentHealth);
 
         Vector2 steeringDirection = CalculateWander();
 
@@ -48,6 +51,7 @@ public class WanderState : IMinionState
         Vector2 desiredVelocity = steeringDirection * minion.currentSpeed;
         minion.rb.linearVelocity = Vector2.MoveTowards(minion.rb.linearVelocity, desiredVelocity, acceleration * Time.fixedDeltaTime);
 
+        // Condition to change out of state
         if (minion.GetDistance(minion.transform.position, minion.chaseTarget.position) <= minion.chaseRange &&
             minion.currentHealth > minion.retreatHealth) minion.ChangeState(minion.chaseState);
     }
