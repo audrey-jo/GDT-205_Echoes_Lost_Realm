@@ -18,9 +18,11 @@ public class Factory : MonoBehaviour
 
     public List<SpawnOption> spawnOptions = new();
     public int selectedIndex;
+    [SerializeField] private GameObject instantKillProjectilePrefab;
 
     public SpawnOption Selected => spawnOptions.Count > 0 ? spawnOptions[selectedIndex] : null;
 
+    private SpriteRenderer instantKillAppearance;
     [Space]
 
     [Header("Timing")]
@@ -36,6 +38,9 @@ public class Factory : MonoBehaviour
 
     void Start()
     {
+        if (instantKillProjectilePrefab != null)
+            instantKillAppearance = instantKillProjectilePrefab.GetComponent<SpriteRenderer>();
+
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(Selected.prefab);
@@ -70,6 +75,11 @@ public class Factory : MonoBehaviour
 
         GameObject obj = objectQueue.Dequeue();
         obj.transform.position = transform.position;
+
+        if (obj.TryGetComponent<SpawnedObject>(out var spawned))
+            spawned.SetInstantKill(
+                AriaCollisions.InstantKillProjectilesEnabled,
+                instantKillAppearance);
 
         obj.SetActive(true);
 

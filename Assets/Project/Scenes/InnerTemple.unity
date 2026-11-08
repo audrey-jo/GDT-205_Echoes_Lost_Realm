@@ -346,6 +346,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &218766389
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 218766390}
+  m_Layer: 6
+  m_Name: SpawnPoint 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &218766390
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218766389}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.37, y: -2.21, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2010056677}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &243715286
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,6 +716,37 @@ Transform:
   - {fileID: 826897679}
   - {fileID: 1384400244}
   m_Father: {fileID: 937339693}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &444611125
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 444611126}
+  m_Layer: 6
+  m_Name: SpawnPoint 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &444611126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 444611125}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.38, y: 2.23, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2010056677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &492042056
 GameObject:
@@ -2498,6 +2560,7 @@ MonoBehaviour:
   spawnOptions:
   - prefab: {fileID: 4977200251875110683, guid: aa1cb590bc9e4d8449926d9ca02e7ff2, type: 3}
   selectedIndex: 0
+  instantKillProjectilePrefab: {fileID: 4977200251875110683, guid: dae8b0ef8393bc849b9916d0333aec39, type: 3}
   spawnInput: {fileID: -9141919127703190490, guid: 57a2ccc946411c94c82e47dd25123663, type: 3}
   spawnDelay: 1
 --- !u!1 &1486923476
@@ -3469,6 +3532,8 @@ GameObject:
   - component: {fileID: 2010056679}
   - component: {fileID: 2010056678}
   - component: {fileID: 2010056680}
+  - component: {fileID: 2010056682}
+  - component: {fileID: 2010056681}
   m_Layer: 6
   m_Name: Boss
   m_TagString: Enemy
@@ -3548,7 +3613,9 @@ Transform:
   m_LocalPosition: {x: 20.25, y: 0, z: 0}
   m_LocalScale: {x: 6, y: 9, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 444611126}
+  - {fileID: 218766390}
   m_Father: {fileID: 1251548397}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &2010056678
@@ -3605,7 +3672,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010056675}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -3670,6 +3737,56 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.75, y: 0.75}
   m_EdgeRadius: 0
+--- !u!114 &2010056681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010056675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595eac0937f63b74b8ef400ee273c0a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossBehaviorTree
+  aria: {fileID: 2119728366}
+  minionPrefab: {fileID: 1404744602383253463, guid: 5597b790c66b4c94c9fe698235432af5, type: 3}
+  spawnPoints:
+  - {fileID: 444611126}
+  - {fileID: 218766390}
+  minionParent: {fileID: 1006330080}
+  retreatPoint: {fileID: 0}
+  phaseTwoProjectilePrefab: {fileID: 5277112301866371173, guid: dd012afc317fbfc46b0f0f1fb9efff92, type: 3}
+  detectionRadius: 47
+  dangerRadius: 20
+  removeWhenAriaLeaves: 1
+  maximumMinions: 4
+  normalCooldown: 6
+  dangerCooldown: 3
+  spawnSpacing: 1.25
+  phaseTwoMaximumMinions: 8
+  phaseTwoSummonMultiplier: 2
+  phaseTwoShotInterval: 3
+  cooldownReduction: 0.5
+  minimumCooldown: 1.5
+  evaluationInterval: 0.2
+  currentDecision: Starting
+  activeSummonedMinionCount: 0
+  encounterCount: 0
+--- !u!114 &2010056682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2010056675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16058444837d36248bc2fc5016ea7fc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossHealth
+  maximumHealth: 20
+  currentHealth: 0
 --- !u!1 &2083267842
 GameObject:
   m_ObjectHideFlags: 0
