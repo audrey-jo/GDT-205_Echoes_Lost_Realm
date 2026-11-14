@@ -23,7 +23,7 @@ public class ChaseState : IMinionState
         minion.rb.linearVelocity = Vector2.MoveTowards(minion.rb.linearVelocity, desiredVelocity, minion.acceleration * Time.fixedDeltaTime);
 
         // Condition to change out of state
-        if (minion.GetDistance(minion.transform.position, minion.retreatTarget.position) > minion.chaseRange + 5)
+        if (minion.GetDistance(minion.transform.position, minion.chaseTarget.position) > minion.chaseRange + 5)
             minion.ChangeState(minion.wanderState);
     }
 
