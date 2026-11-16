@@ -67,9 +67,9 @@ public class AriaCollisions : MonoBehaviour
             sceneManager.LoadScene("InnerTemple");
         }
 
-        if (collision.gameObject.CompareTag("ToNext"))
+        /*if (collision.gameObject.CompareTag("ToNext"))
         {
             Debug.Log("To next area (portal not set up yet)");
-        }
+        }*/
     }
 }
