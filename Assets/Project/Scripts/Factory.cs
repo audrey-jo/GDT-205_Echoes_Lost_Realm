@@ -19,6 +19,8 @@ public class Factory : MonoBehaviour
     public List<SpawnOption> spawnOptions = new();
     public int selectedIndex;
     [SerializeField] private GameObject instantKillProjectilePrefab;
+    [SerializeField] private Transform projectileOrigin;
+    [SerializeField, Min(0f)] private float projectileMuzzleOffset = 0.85f;
 
     public SpawnOption Selected => spawnOptions.Count > 0 ? spawnOptions[selectedIndex] : null;
 
@@ -38,6 +40,9 @@ public class Factory : MonoBehaviour
 
     void Start()
     {
+        if (projectileOrigin == null && transform.parent != null)
+            projectileOrigin = transform.parent.Find("Cannon");
+
         if (instantKillProjectilePrefab != null)
             instantKillAppearance = instantKillProjectilePrefab.GetComponent<SpriteRenderer>();
 
@@ -74,14 +79,28 @@ public class Factory : MonoBehaviour
             Despawn(activeObjects[0]);
 
         GameObject obj = objectQueue.Dequeue();
-        obj.transform.position = transform.position;
+        Transform origin = projectileOrigin != null ? projectileOrigin : transform;
+        Vector2 direction = origin.right;
+        Vector3 spawnPosition = origin.position + (Vector3)(direction.normalized * projectileMuzzleOffset);
+        spawnPosition.z = transform.position.z;
+        obj.transform.position = spawnPosition;
 
         if (obj.TryGetComponent<SpawnedObject>(out var spawned))
+        {
+            AriaCollisions owner = GetComponentInParent<AriaCollisions>();
+            spawned.SetOwner(owner != null ? owner.transform : null);
+            spawned.SetTravelDirection(direction);
             spawned.SetInstantKill(
                 AriaCollisions.InstantKillProjectilesEnabled,
                 instantKillAppearance);
+        }
 
+        Collider2D ariaCollider = GetComponentInParent<AriaCollisions>()?.GetComponentInChildren<Collider2D>();
+        Collider2D projectileCollider = obj.GetComponent<Collider2D>();
         obj.SetActive(true);
+
+        if (ariaCollider != null && projectileCollider != null)
+            Physics2D.IgnoreCollision(projectileCollider, ariaCollider, true);
 
         activeObjects.Add(obj);
     }

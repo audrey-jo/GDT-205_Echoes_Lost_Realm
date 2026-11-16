@@ -12,6 +12,7 @@ public class SpawnedObject : MonoBehaviour
     private bool instantKill;
     private bool isEnemyProjectile;
     private Vector2 travelDirection = Vector2.right;
+    private Transform owner;
     private SpriteRenderer projectileRenderer;
     private Sprite regularSprite;
     private Color regularColor;
@@ -37,6 +38,11 @@ public class SpawnedObject : MonoBehaviour
             travelDirection = direction.normalized;
 
         isEnemyProjectile = enemyProjectile;
+    }
+
+    public void SetOwner(Transform projectileOwner)
+    {
+        owner = projectileOwner;
     }
 
     public void SetInstantKill(bool enabled, SpriteRenderer instantKillAppearance)
@@ -70,6 +76,10 @@ public class SpawnedObject : MonoBehaviour
 
     private void HandleHit(GameObject target)
     {
+        // A projectile should pass through the character that fired it.
+        if (owner != null && (target.transform == owner || target.transform.IsChildOf(owner)))
+            return;
+
         AriaCollisions aria = target.GetComponentInParent<AriaCollisions>();
         if (aria != null)
         {
@@ -77,26 +87,34 @@ public class SpawnedObject : MonoBehaviour
         }
         else if (!isEnemyProjectile)
         {
-            BossHealth bossHealth = target.GetComponentInParent<BossHealth>();
-            if (bossHealth != null)
+            GuardianStatues guardian = target.GetComponentInParent<GuardianStatues>();
+            if (guardian != null)
             {
-                bossHealth.TakeDamage(instantKill ? int.MaxValue : 1);
+                guardian.TakeDamage(instantKill ? int.MaxValue : 1);
             }
             else
             {
-                GameObject enemy = target;
-                while (enemy != null && !enemy.CompareTag("Enemy"))
+                BossHealth bossHealth = target.GetComponentInParent<BossHealth>();
+                if (bossHealth != null)
                 {
-                    enemy = enemy.transform.parent != null ? enemy.transform.parent.gameObject : null;
+                    bossHealth.TakeDamage(instantKill ? int.MaxValue : 1);
                 }
-
-                if (enemy != null)
+                else
                 {
-                    Minion minion = target.GetComponentInParent<Minion>();
-                    if (minion != null)
-                        minion.TakeDamage(instantKill ? int.MaxValue : 2);
-                    else if (instantKill)
-                        enemy.SetActive(false);
+                    GameObject enemy = target;
+                    while (enemy != null && !enemy.CompareTag("Enemy"))
+                    {
+                        enemy = enemy.transform.parent != null ? enemy.transform.parent.gameObject : null;
+                    }
+
+                    if (enemy != null)
+                    {
+                        Minion minion = target.GetComponentInParent<Minion>();
+                        if (minion != null)
+                            minion.TakeDamage(instantKill ? int.MaxValue : 2);
+                        else if (instantKill)
+                            enemy.SetActive(false);
+                    }
                 }
             }
         }
